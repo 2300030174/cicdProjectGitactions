@@ -64,4 +64,7 @@ jobs:
             sleep 30
             sudo docker-compose ps
             sudo docker-compose logs backend --tail=20
+
             sudo docker-compose logs frontend --tail=20
+            with:
+              debug: true
