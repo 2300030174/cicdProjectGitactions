@@ -1,0 +1,22 @@
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+WORKDIR /app
+
+# Copy backend source
+COPY ./backend /app
+
+# Build the Spring Boot app
+RUN mvn clean package -DskipTests
+
+# Runtime stage
+FROM openjdk:21-slim
+WORKDIR /app
+
+# Copy the JAR built in builder stage
+COPY --from=builder /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose backend port
+EXPOSE 5001
+
+# Run Spring Boot app
+CMD ["java", "-jar", "app.jar"]
